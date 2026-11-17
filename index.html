@@ -62,6 +62,11 @@
     will-change: transform, opacity;
   }
   .base { inset: 0; width: 100%; height: 100%; }
+  .sky {
+    position: absolute; inset: 0;
+    -webkit-mask: url(images/sky_mask.webp) 0 0 / 100% 100% no-repeat;
+            mask: url(images/sky_mask.webp) 0 0 / 100% 100% no-repeat;
+  }
 
   /* sky glow behind the text, deepens as the garden blooms */
   .glow {
@@ -204,7 +209,8 @@
       <img class="base" src="images/scene_base.webp" alt="" draggable="false">
       <div class="glow" data-fx="glow"></div>
 
-      <!-- sky: clouds, moon, stars -->
+      <!-- sky: clouds, moon, stars — masked to the open sky so they sit behind the arch, pillars and pavilions -->
+      <div class="sky">
       <img class="layer" data-fx="cloudL" src="images/34_large_cloud_left.webp"  alt="" style="left:-12%; top:61%; width:36%; opacity:.6">
       <img class="layer" data-fx="cloudR" src="images/11_large_cloud_right.webp" alt="" style="right:-14%; top:55%; width:40%; opacity:.55">
       <img class="layer" data-fx="cloudS" src="images/12_small_cloud.webp"       alt="" style="left:30%; top:68%; width:22%; opacity:.5">
@@ -214,6 +220,7 @@
       <div class="wrap" style="left:72%; top:44%; width:2.4%"><img class="twinkle" style="animation-delay:-1.1s" src="images/07_five_point_star.webp" alt=""></div>
       <div class="wrap" style="left:30%; top:52%; width:2%"><img class="twinkle" style="animation-delay:-2s" src="images/07_five_point_star.webp" alt=""></div>
       <div class="wrap" style="left:62%; top:16%; width:2.2%"><img class="twinkle" style="animation-delay:-.6s" src="images/07_five_point_star.webp" alt=""></div>
+      </div>
 
       <!-- text panels -->
       <div class="panels">
@@ -262,32 +269,12 @@
       <!-- center lantern hanging from the arch apex -->
       <div class="wrap" data-fx="lanternC" style="left:46.4%; top:5.6%; width:7.2%"><img class="swing lantern-glow" src="images/25_blue_gold_hanging_lantern_center.webp" alt=""></div>
 
-      <!-- side greenery and birds -->
+      <!-- side greenery -->
       <div class="wrap" data-fx="banana" style="left:2%; top:38%; width:21%"><img class="rustle" src="images/23_tall_banana_leaves.webp" alt=""></div>
       <div class="wrap" data-fx="tree" style="right:-3%; top:45%; width:22%"><img class="rustle b" src="images/14_round_green_tree.webp" alt=""></div>
-      <img class="layer" data-fx="parrotL" src="images/15_parrot_left.webp"  alt="" style="left:8%; top:53%; width:9.5%">
-      <img class="layer" data-fx="parrotR" src="images/16_parrot_right.webp" alt="" style="right:6.5%; top:50%; width:9.5%">
 
-      <!-- flowering plants behind the pavilions -->
-      <div class="wrap" data-fx="bush" style="right:7%; top:61%; width:24%"><img class="rustle" src="images/22_pink_flowering_bush.webp" alt=""></div>
-      <div class="wrap" data-fx="stem" style="left:23%; top:66%; width:10%"><img class="rustle b" src="images/21_pink_flower_stem.webp" alt=""></div>
       <div class="wrap" data-fx="sprig" style="left:3%; top:51%; width:15%"><img class="rustle" src="images/20_pink_flower_sprig.webp" alt=""></div>
 
-      <!-- lanterns on the domes -->
-      <div class="wrap" data-fx="lanternL" style="left:9.5%; top:70.5%; width:6.6%"><img class="swing b lantern-glow" src="images/18_blue_hanging_lantern_left.webp" alt=""></div>
-      <div class="wrap" data-fx="lanternR" style="right:9.5%; top:69%; width:6.6%"><img class="swing c lantern-glow" src="images/19_blue_hanging_lantern_right.webp" alt=""></div>
-      <div class="wrap" data-fx="lanternG1" style="left:29%; top:79%; width:5.2%"><img class="swing c gold-glow" src="images/24_gold_hanging_lantern_left.webp" alt=""></div>
-      <div class="wrap" data-fx="lanternG2" style="right:29%; top:79%; width:5.2%"><img class="swing gold-glow" src="images/26_gold_hanging_lantern_right.webp" alt=""></div>
-
-      <!-- terrace: plants, lamps, vase, songbird -->
-      <div class="wrap" data-fx="grass" style="left:12%; bottom:6.5%; width:14%"><img class="rustle b" src="images/37_spiky_grass_plant.webp" alt=""></div>
-      <div class="wrap" data-fx="orange" style="left:34%; bottom:4%; width:13%"><img class="rustle" src="images/31_orange_flower_clump.webp" alt=""></div>
-      <div class="wrap" data-fx="leafy" style="left:52%; bottom:3.5%; width:17%"><img class="rustle b" src="images/36_broad_leaf_tropical_plant.webp" alt=""></div>
-      <div class="wrap" data-fx="osprig" style="right:28%; bottom:5%; width:6.5%"><img class="rustle" src="images/32_orange_flower_sprig.webp" alt=""></div>
-      <img class="layer" data-fx="vase" src="images/28_decorative_blue_vase.webp" alt="" style="right:8.5%; bottom:2%; width:12.5%">
-      <div class="wrap" data-fx="lampL" style="left:12%; bottom:1.5%; width:10%"><img class="flicker" src="images/29_oil_lamp_left.webp" alt=""></div>
-      <div class="wrap" data-fx="lampR" style="right:22%; bottom:1%; width:9.5%"><img class="flicker" style="animation-delay:-.8s" src="images/30_oil_lamp_right.webp" alt=""></div>
-      <img class="layer" data-fx="bird" src="images/27_little_songbird.webp" alt="" style="left:22%; bottom:3%; width:12%">
 
     </div>
 
@@ -363,40 +350,8 @@
     set('tree',   side, `translateX(${(1 - side) * 14}cqw)`);
     const sp = r(p, .32, .48);
     set('sprig', sp, `scale(${.6 + .4 * sp})`);
-
-    const pl = r(p, .38, .52), pr = r(p, .42, .56);
-    set('parrotL', pl, `translate(${(1 - pl) * -30}cqw, ${(1 - pl) * -18}cqh) rotate(${(1 - pl) * -20}deg)`);
-    set('parrotR', pr, `translate(${(1 - pr) * 30}cqw, ${(1 - pr) * -18}cqh) rotate(${(1 - pr) * 20}deg)`);
-
-    const bush = r(p, .44, .6);
-    set('bush', bush, `scale(${.4 + .6 * bush})`);
-    set('stem', r(p, .47, .62), `scale(${.4 + .6 * r(p, .47, .62)})`);
-
-    const lan = r(p, .5, .64);
-    set('lanternL', lan, `translateY(${(1 - lan) * -6}cqh)`);
-    set('lanternR', lan, `translateY(${(1 - lan) * -6}cqh)`);
-    const lg = r(p, .56, .7);
-    set('lanternG1', lg, `translateY(${(1 - lg) * -5}cqh)`);
-    set('lanternG2', lg, `translateY(${(1 - lg) * -5}cqh)`);
-
-    const g1 = r(p, .58, .72), g2 = r(p, .62, .76), g3 = r(p, .66, .8);
-    set('grass',  g1, `scaleY(${.2 + .8 * g1})`);
-    set('orange', g2, `scaleY(${.2 + .8 * g2})`);
-    set('leafy',  g3, `scaleY(${.2 + .8 * g3})`);
-    set('osprig', g2, `scaleY(${.2 + .8 * g2})`);
-    const v = r(p, .68, .8);
-    set('vase', v, `translateY(${(1 - v) * 6}cqh)`);
-    const lamps = r(p, .7, .82);
-    set('lampL', lamps, `scale(${.7 + .3 * lamps})`);
-    set('lampR', lamps, `scale(${.7 + .3 * lamps})`);
-
-    // songbird flies in from the left and lands
-    const b = r(p, .78, .92);
-    set('bird', b, `translate(${(1 - b) * -40}cqw, ${-Math.sin(b * Math.PI) * 8 - (1 - b) * 20}cqh) rotate(${(1 - b) * -18}deg)`);
   }
 
-  // grow transforms from the ground for plants
-  ['grass', 'orange', 'leafy', 'osprig', 'bush', 'stem'].forEach(k => fx[k] && (fx[k].style.transformOrigin = '50% 100%'));
   fx.sprig && (fx.sprig.style.transformOrigin = '0 50%');
 
   let ticking = false;
