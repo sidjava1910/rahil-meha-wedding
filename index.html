@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rahil &amp; Meha · Wedding Reception</title>
-<meta name="description" content="You are warmly invited to the wedding reception of Rahil &amp; Meha · Saturday, 12 December 2026 · 6:00 PM · Galio Celebration, Malappuram">
+<meta name="description" content="You are warmly invited to the wedding reception of Rahil &amp; Meha · Saturday, 12 December 2026 · 5:30 PM · Galio Celebration, Malappuram">
 <meta property="og:title" content="Rahil &amp; Meha · Wedding Reception">
-<meta property="og:description" content="Saturday, 12 December 2026 · 6:00 PM · Galio Celebration, Malappuram">
+<meta property="og:description" content="Saturday, 12 December 2026 · 5:30 PM · Galio Celebration, Malappuram">
 <meta name="theme-color" content="#0b1a4a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,14 +124,23 @@
       radial-gradient(circle, var(--gold) 0 .9cqw, transparent 1cqw) center / 3cqw 3cqw no-repeat,
       linear-gradient(90deg, transparent, var(--gold) 30%, transparent 46%, transparent 54%, var(--gold) 70%, transparent) center / 100% 1px no-repeat;
   }
-  .day { font-family: "Cinzel", serif; font-size: 3.6cqw; letter-spacing: .3em; text-transform: uppercase; color: #e9e2f7; }
+  .month {
+    font-family: "Cinzel", serif; font-size: 3.8cqw; letter-spacing: .42em; padding-left: .42em;
+    text-transform: uppercase; color: var(--gold);
+  }
   .date {
-    display: flex; align-items: center; gap: 3cqw; margin: 1.5cqw 0;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    width: 100%; margin: 1.4cqw 0 1.8cqw;
     font-family: "Cinzel", serif; color: var(--ivory);
   }
-  .date .side { font-size: 4cqw; letter-spacing: .2em; text-transform: uppercase; padding: 1cqw 0; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); min-width: 17cqw; }
-  .date .num { font-family: "Cinzel Decorative", serif; font-size: 13cqw; line-height: 1; color: var(--gold); }
-  .time { font-size: 5.2cqw; font-weight: 500; letter-spacing: .06em; }
+  .date .side {
+    font-size: 3.5cqw; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap;
+    padding: 1.6cqw 0; border-top: 1px solid rgba(226,189,107,.75); border-bottom: 1px solid rgba(226,189,107,.75);
+  }
+  .date .num {
+    font-family: "Cormorant Garamond", serif; font-weight: 500; font-variant-numeric: lining-nums;
+    font-size: 16cqw; line-height: 1; color: var(--gold); padding: 0 4.5cqw;
+  }
   .venue { font-family: "Cinzel", serif; font-weight: 600; font-size: 5.6cqw; letter-spacing: .08em; color: var(--ivory); line-height: 1.2; }
   .place { font-size: 4.4cqw; font-style: italic; color: #e9e2f7; margin-top: .6cqw; }
 
@@ -157,11 +166,13 @@
 
   /* ---------- scroll hint ---------- */
   .hint {
-    position: absolute; left: 0; right: 0; bottom: max(3svh, env(safe-area-inset-bottom));
-    display: flex; flex-direction: column; align-items: center; gap: .6em;
-    font-family: "Cinzel", serif; font-size: 11px; letter-spacing: .35em; text-transform: uppercase;
-    color: var(--ivory); text-shadow: 0 1px 8px rgba(0,0,0,.8);
-    transition: opacity .4s ease;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 16svh 0 calc(3.5svh + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: .7em;
+    background: linear-gradient(to top, rgba(6,15,48,.95) 0%, rgba(6,15,48,.8) 38%, rgba(6,15,48,0) 100%);
+    font-family: "Cinzel", serif; font-size: 12px; font-weight: 600; letter-spacing: .35em; padding-left: .35em;
+    text-transform: uppercase; color: var(--ivory);
+    transition: opacity .4s ease; pointer-events: none;
   }
   .hint i {
     width: 22px; height: 34px; border: 1.5px solid var(--gold); border-radius: 12px; position: relative;
@@ -170,6 +181,14 @@
     content: ""; position: absolute; left: 50%; top: 6px; width: 3px; height: 7px; margin-left: -1.5px;
     background: var(--gold); border-radius: 2px; animation: wheel 1.6s ease-in-out infinite;
   }
+  /* touch screens: an upward chevron instead of a mouse wheel */
+  .hint.touch i { border: none; border-radius: 0; height: 26px; }
+  .hint.touch i::after {
+    top: 10px; width: 12px; height: 12px; margin-left: -6px; background: none; border-radius: 0;
+    border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+    transform: rotate(45deg); animation: chev 1.6s ease-in-out infinite;
+  }
+  @keyframes chev { 0% { translate: 0 6px; opacity: 0 } 40% { opacity: 1 } 100% { translate: 0 -6px; opacity: 0 } }
   @keyframes wheel { 0% { transform: translateY(0); opacity: 1 } 80%, 100% { transform: translateY(11px); opacity: 0 } }
 
   /* ---------- idle motion (wrappers so scroll transforms and idle motion don't fight) ---------- */
@@ -238,23 +257,27 @@
           <p class="eyebrow">Join us for the</p>
           <h2 class="title" style="margin-top:1.6cqw">Wedding<br>Reception</h2>
           <div class="divider"></div>
-          <p class="day">Saturday</p>
-          <div class="date"><span class="side">December</span><span class="num">12</span><span class="side">2026</span></div>
-          <p class="time">at six o'clock in the evening</p>
+          <p class="month">December</p>
+          <div class="date">
+            <span class="side">Saturday</span>
+            <span class="num">12</span>
+            <span class="side">5:30 PM</span>
+          </div>
+          <p class="month">2026</p>
         </section>
 
         <section class="panel" data-panel="3" aria-label="Venue">
           <p class="eyebrow">Venue</p>
           <p class="venue" style="margin-top:2cqw">Galio Celebration</p>
           <p class="place">Malappuram, Kerala</p>
-          <div class="btns">
-            <a class="btn" href="https://maps.app.goo.gl/xREb1GMu7GdNcEmUA" target="_blank" rel="noopener">Open in Maps</a>
-            <a class="btn ghost" id="cal" target="_blank" rel="noopener">Add to Calendar</a>
-          </div>
           <div class="countdown" id="countdown" aria-label="Countdown to the reception">
             <div><b data-k="d">–</b><span>Days</span></div>
             <div><b data-k="h">–</b><span>Hours</span></div>
             <div><b data-k="m">–</b><span>Mins</span></div>
+          </div>
+          <div class="btns">
+            <a class="btn" href="https://maps.app.goo.gl/xREb1GMu7GdNcEmUA" target="_blank" rel="noopener">Open in Maps</a>
+            <a class="btn ghost" id="cal" target="_blank" rel="noopener">Add to Calendar</a>
           </div>
           <p class="closing">Your presence is our blessing</p>
         </section>
@@ -273,11 +296,11 @@
 
     </div>
 
-    <div class="hint" id="hint" aria-hidden="true"><i></i><span>Scroll to open</span></div>
+    <div class="hint" id="hint" aria-hidden="true"><i></i><span id="hintText">Scroll to open</span></div>
   </div>
 </div>
 
-<noscript><p class="noscript">Rahil &amp; Meha · Wedding Reception · Saturday 12 December 2026, 6:00 PM · Galio Celebration, Malappuram</p></noscript>
+<noscript><p class="noscript">Rahil &amp; Meha · Wedding Reception · Saturday 12 December 2026, 5:30 PM · Galio Celebration, Malappuram</p></noscript>
 
 <script>
 (() => {
@@ -294,6 +317,7 @@
   });
   const panels = [...document.querySelectorAll('[data-panel]')];
   const hint = $('#hint');
+  if (matchMedia('(pointer: coarse)').matches) { $('#hintText').textContent = 'Swipe up to open'; hint.classList.add('touch'); }
 
   // text panels: [fade-in start, fully in, start fade-out, gone]
   const P = [
@@ -351,8 +375,8 @@
   addEventListener('resize', update);
   render(progress());
 
-  // countdown to 12 Dec 2026, 6:00 PM IST
-  const target = Date.UTC(2026, 11, 12, 12, 30);
+  // countdown to 12 Dec 2026, 5:30 PM IST
+  const target = Date.UTC(2026, 11, 12, 12, 0);
   const cd = { d: $('[data-k=d]'), h: $('[data-k=h]'), m: $('[data-k=m]') };
   const tick = () => {
     let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
@@ -363,10 +387,10 @@
   };
   tick(); setInterval(tick, 30000);
 
-  // Google Calendar link (6–10 PM IST)
+  // Google Calendar link (5:30–9:30 PM IST)
   $('#cal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
     + '&text=' + encodeURIComponent('Wedding Reception · Rahil & Meha')
-    + '&dates=20261212T123000Z/20261212T163000Z'
+    + '&dates=20261212T120000Z/20261212T160000Z'
     + '&location=' + encodeURIComponent('Galio Celebration, Malappuram, Kerala')
     + '&details=' + encodeURIComponent('Directions: https://maps.app.goo.gl/xREb1GMu7GdNcEmUA');
 })();
