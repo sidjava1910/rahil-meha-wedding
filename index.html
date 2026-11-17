@@ -269,11 +269,6 @@
       <!-- center lantern hanging from the arch apex -->
       <div class="wrap" data-fx="lanternC" style="left:46.4%; top:5.6%; width:7.2%"><img class="swing lantern-glow" src="images/25_blue_gold_hanging_lantern_center.webp" alt=""></div>
 
-      <!-- side greenery -->
-      <div class="wrap" data-fx="banana" style="left:2%; top:38%; width:21%"><img class="rustle" src="images/23_tall_banana_leaves.webp" alt=""></div>
-      <div class="wrap" data-fx="tree" style="right:-3%; top:45%; width:22%"><img class="rustle b" src="images/14_round_green_tree.webp" alt=""></div>
-
-      <div class="wrap" data-fx="sprig" style="left:3%; top:51%; width:15%"><img class="rustle" src="images/20_pink_flower_sprig.webp" alt=""></div>
 
 
     </div>
@@ -344,15 +339,7 @@
     set('vineR2', r(p, .21, .39), `translateY(${(1 - r(p, .21, .39)) * -10}cqh)`);
     const lc = r(p, .05, .2);
     set('lanternC', lc, `translateY(${(1 - lc) * -10}cqh)`);
-
-    const side = r(p, .28, .46);
-    set('banana', side, `translateX(${(1 - side) * -14}cqw) rotate(${(1 - side) * -10}deg)`);
-    set('tree',   side, `translateX(${(1 - side) * 14}cqw)`);
-    const sp = r(p, .32, .48);
-    set('sprig', sp, `scale(${.6 + .4 * sp})`);
   }
-
-  fx.sprig && (fx.sprig.style.transformOrigin = '0 50%');
 
   let ticking = false;
   const progress = () => {
