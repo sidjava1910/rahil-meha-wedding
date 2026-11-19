@@ -43,8 +43,8 @@
   }
   .frame {
     position: relative;
-    /* fills whatever is visible right now (toolbar shown or collapsed) */
-    width: min(100vw, 56.28vh); width: min(100vw, 56.28lvh);
+    /* fills exactly what is visible (the page never scrolls, so this stays put) */
+    width: min(100vw, 56.28vh); width: min(100vw, 56.28dvh);
     height: 100%;
     overflow: hidden;
     pointer-events: auto;
@@ -53,8 +53,7 @@
   /* the scene keeps the artwork's exact proportions; on narrow phones it is cropped at the pillars */
   .scene {
     position: absolute; top: 0; left: 50%;
-    /* sized to the tallest viewport so it never runs short when Safari's toolbar collapses */
-    height: 100vh; height: 100lvh; min-height: 100%;
+    height: 100%;
     aspect-ratio: 941 / 1672;
     transform: translateX(-50%);
     container-type: size;
@@ -171,13 +170,14 @@
   .hint {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 20;
     /* extra bottom room so it clears Safari's floating toolbar */
-    padding: 22svh 0 calc(7svh + env(safe-area-inset-bottom));
+    padding: 12svh 0 calc(3.5svh + env(safe-area-inset-bottom));
     display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 9px;
-    background: linear-gradient(to top, rgba(4,10,36,.97) 0%, rgba(4,10,36,.88) 40%, rgba(4,10,36,.5) 70%, rgba(4,10,36,0) 100%);
+    background: linear-gradient(to top, rgba(4,10,36,.95) 0%, rgba(4,10,36,.75) 35%, rgba(4,10,36,.3) 70%, rgba(4,10,36,0) 100%);
     font-family: "Cinzel", serif; font-size: 12px; font-weight: 700; letter-spacing: .3em; padding-left: .3em;
     text-transform: uppercase; color: #fff4d6; text-shadow: 0 1px 8px rgba(0,0,0,.8);
-    transition: opacity .4s ease; pointer-events: none;
+    pointer-events: none;
   }
+  .hint i, .hint span { transition: opacity .4s ease; }
   .hint i {
     width: 22px; height: 34px; border: 1.5px solid var(--gold); border-radius: 12px; position: relative;
   }
@@ -308,7 +308,7 @@
 
     </div>
 
-    <div class="hint" id="hint" aria-hidden="true"><i></i><span id="hintText">Scroll to open</span></div>
+    <div class="hint" id="hint" aria-hidden="true"><i id="hintIcon"></i><span id="hintText">Scroll to open</span></div>
   </div>
 </div>
 
@@ -330,7 +330,7 @@
   const panels = [...document.querySelectorAll('[data-panel]')];
   const hint = $('#hint');
   const touch = matchMedia('(pointer: coarse)').matches;
-  const hintText = $('#hintText');
+  const hintText = $('#hintText'), hintIcon = $('#hintIcon');
   const HINT = touch ? ['Swipe up to open', 'Keep swiping'] : ['Scroll to open', 'Keep scrolling'];
   if (touch) hint.classList.add('touch');
   hintText.textContent = HINT[0];
@@ -362,7 +362,8 @@
       el.setAttribute('aria-hidden', o < .5);
     });
     // stays up through every panel, leaves once the venue panel arrives
-    hint.style.opacity = 1 - r(p, .62, .68);
+    // the gradient stays on every screen; only the arrow + text leave on the venue panel
+    hintIcon.style.opacity = hintText.style.opacity = 1 - r(p, .62, .68);
     const ht = HINT[p < .04 ? 0 : 1];
     if (hintText.textContent !== ht) hintText.textContent = ht;
 
