@@ -199,6 +199,10 @@
   @keyframes bob { 0%, 100% { transform: translateY(3px) } 50% { transform: translateY(-4px) } }
   @keyframes wheel { 0% { transform: translateY(0); opacity: 1 } 80%, 100% { transform: translateY(11px); opacity: 0 } }
 
+  /* clouds drift across the sky on their own, independent of swiping */
+  .drift { animation: drift linear infinite; will-change: transform; }
+  @keyframes drift { from { transform: translateX(-45cqw) } to { transform: translateX(105cqw) } }
+
   /* ---------- idle motion (wrappers so scroll transforms and idle motion don't fight) ---------- */
   .swing { transform-origin: 50% 0; animation: swing 4.8s ease-in-out infinite alternate; }
   .swing.b { animation-duration: 5.6s; animation-delay: -2s; }
@@ -221,6 +225,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .swing, .sway, .rustle, .twinkle, .flicker, .hint i, .hint i::after { animation: none !important; }
+    .drift { animation-play-state: paused !important; }
   }
   .noscript { position: fixed; inset: auto 0 0 0; padding: 1rem; text-align: center; background: var(--navy); }
 </style>
@@ -237,10 +242,10 @@
 
       <!-- sky: clouds, moon, stars — masked to the open sky so they sit behind the arch, pillars and pavilions -->
       <div class="sky">
-      <img class="layer" data-fx="cloudL" src="images/34_large_cloud_left.webp"  alt="" style="left:-12%; top:61%; width:36%; opacity:.6">
-      <img class="layer" data-fx="cloudR" src="images/11_large_cloud_right.webp" alt="" style="right:-14%; top:55%; width:40%; opacity:.55">
-      <img class="layer" data-fx="cloudS" src="images/12_small_cloud.webp"       alt="" style="left:30%; top:68%; width:22%; opacity:.5">
-      <img class="layer" data-fx="cloudM" src="images/13_low_cloud_middle.webp"  alt="" style="left:16%; top:14%; width:24%; opacity:.35">
+      <img class="layer drift" src="images/34_large_cloud_left.webp"  alt="" style="left:0; top:61%; width:36%; opacity:.6;  animation-duration:95s;  animation-delay:-21s">
+      <img class="layer drift" src="images/11_large_cloud_right.webp" alt="" style="left:0; top:55%; width:40%; opacity:.55; animation-duration:120s; animation-delay:-95s">
+      <img class="layer drift" src="images/12_small_cloud.webp"       alt="" style="left:0; top:68%; width:22%; opacity:.5;  animation-duration:75s;  animation-delay:-38s">
+      <img class="layer drift" src="images/13_low_cloud_middle.webp"  alt="" style="left:0; top:14%; width:24%; opacity:.35; animation-duration:130s; animation-delay:-53s">
       <img class="layer" data-fx="moon"   src="images/06_crescent_moon.webp"     alt="" style="right:21%; top:14%; width:9.5%">
       <div class="wrap" style="left:20%; top:22%; width:3.2%"><img class="twinkle" src="images/07_five_point_star.webp" alt=""></div>
       <div class="wrap" style="left:72%; top:44%; width:2.4%"><img class="twinkle" style="animation-delay:-1.1s" src="images/07_five_point_star.webp" alt=""></div>
@@ -363,10 +368,6 @@
 
     // sky
     set('moon', null, `translateY(${(1 - r(p, 0, .3)) * 3}cqh) rotate(${-8 + p * 14}deg)`);
-    set('cloudL', null, `translateX(${p * 14}cqw)`);
-    set('cloudR', null, `translateX(${-p * 16}cqw)`);
-    set('cloudS', null, `translateX(${p * 18 - 6}cqw)`);
-    set('cloudM', null, `translateX(${p * 20}cqw)`);
     fx.glow.style.opacity = r(p, .15, .5) * .9;
 
     // garden blooms in stages
