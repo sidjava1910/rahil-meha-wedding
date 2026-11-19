@@ -169,9 +169,9 @@
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 20;
     /* extra bottom room so it clears Safari's floating toolbar */
     padding: 22svh 0 calc(7svh + env(safe-area-inset-bottom));
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 9px;
     background: linear-gradient(to top, rgba(4,10,36,.97) 0%, rgba(4,10,36,.88) 40%, rgba(4,10,36,.5) 70%, rgba(4,10,36,0) 100%);
-    font-family: "Cinzel", serif; font-size: 14px; font-weight: 700; letter-spacing: .3em; padding-left: .3em;
+    font-family: "Cinzel", serif; font-size: 12px; font-weight: 700; letter-spacing: .3em; padding-left: .3em;
     text-transform: uppercase; color: #fff4d6; text-shadow: 0 1px 8px rgba(0,0,0,.8);
     transition: opacity .4s ease; pointer-events: none;
   }
@@ -184,18 +184,19 @@
   }
   /* touch screens: a gold ring with a bouncing double chevron */
   .hint.touch i {
-    width: 46px; height: 46px; border: 1.5px solid var(--gold); border-radius: 50%;
-    background: rgba(226,189,107,.12); box-shadow: 0 0 18px rgba(226,189,107,.35);
+    width: 36px; height: 36px; border: 1.5px solid var(--gold); border-radius: 50%;
+    background: rgba(226,189,107,.12); box-shadow: 0 0 14px rgba(226,189,107,.3);
     animation: bob 1.6s ease-in-out infinite;
   }
+  /* two 10px chevrons, optically centred inside the 33px inner box */
   .hint.touch i::before, .hint.touch i::after {
-    content: ""; position: absolute; left: 50%; width: 13px; height: 13px; margin-left: -6.5px;
-    background: none; border-radius: 0; border-top: 2.5px solid var(--gold); border-left: 2.5px solid var(--gold);
+    content: ""; position: absolute; left: 50%; width: 10px; height: 10px; margin-left: -5px;
+    background: none; border-radius: 0; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
     transform: rotate(45deg); animation: none;
   }
-  .hint.touch i::before { top: 13px; }
-  .hint.touch i::after { top: 21px; opacity: .55; }
-  @keyframes bob { 0%, 100% { transform: translateY(4px) } 50% { transform: translateY(-6px) } }
+  .hint.touch i::before { top: 12.5px; }
+  .hint.touch i::after { top: 17.5px; opacity: .55; }
+  @keyframes bob { 0%, 100% { transform: translateY(3px) } 50% { transform: translateY(-4px) } }
   @keyframes wheel { 0% { transform: translateY(0); opacity: 1 } 80%, 100% { transform: translateY(11px); opacity: 0 } }
 
   /* ---------- idle motion (wrappers so scroll transforms and idle motion don't fight) ---------- */
@@ -327,7 +328,11 @@
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   scrollTo(0, 0);
   const hint = $('#hint');
-  if (matchMedia('(pointer: coarse)').matches) { $('#hintText').textContent = 'Swipe up to open'; hint.classList.add('touch'); }
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const hintText = $('#hintText');
+  const HINT = touch ? ['Swipe up to open', 'Keep swiping'] : ['Scroll to open', 'Keep scrolling'];
+  if (touch) hint.classList.add('touch');
+  hintText.textContent = HINT[0];
 
   // text panels: [fade-in start, fully in, start fade-out, gone]
   const P = [
@@ -355,7 +360,10 @@
       el.classList.toggle('on', o > .5);
       el.setAttribute('aria-hidden', o < .5);
     });
-    hint.style.opacity = 1 - r(p, .03, .09);
+    // stays up through every panel, leaves once the venue panel arrives
+    hint.style.opacity = 1 - r(p, .62, .68);
+    const ht = HINT[p < .04 ? 0 : 1];
+    if (hintText.textContent !== ht) hintText.textContent = ht;
 
     // sky
     set('moon', null, `translateY(${(1 - r(p, 0, .3)) * 3}cqh) rotate(${-8 + p * 14}deg)`);
