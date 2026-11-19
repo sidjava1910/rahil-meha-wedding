@@ -22,7 +22,7 @@
     --gold-grad: linear-gradient(180deg, #fbe6a8 0%, #e2bd6b 45%, #b98a35 100%);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { background: var(--navy-deep); }
+  html { background: var(--navy-deep); overscroll-behavior-y: none; }
   body {
     background:
       radial-gradient(ellipse at 50% 30%, #1a2f7a 0%, var(--navy) 45%, var(--navy-deep) 100%) fixed;
@@ -42,8 +42,9 @@
   }
   .frame {
     position: relative;
-    width: min(100vw, 56.28svh);
-    height: 100svh;
+    /* fills whatever is visible right now (toolbar shown or collapsed) */
+    width: min(100vw, 56.28vh); width: min(100vw, 56.28lvh);
+    height: 100%;
     overflow: hidden;
     pointer-events: auto;
     box-shadow: 0 0 80px rgba(0,0,0,.55);
@@ -51,7 +52,8 @@
   /* the scene keeps the artwork's exact proportions; on narrow phones it is cropped at the pillars */
   .scene {
     position: absolute; top: 0; left: 50%;
-    height: 100%;
+    /* sized to the tallest viewport so it never runs short when Safari's toolbar collapses */
+    height: 100vh; height: 100lvh; min-height: 100%;
     aspect-ratio: 941 / 1672;
     transform: translateX(-50%);
     container-type: size;
